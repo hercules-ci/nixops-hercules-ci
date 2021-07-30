@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "nixops-hercules-ci"
+version = "0.1.0"
+description = ""
+authors = ["Robert Hensing <robert@roberthensing.nl>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+nixops = {git = "https://github.com/NixOS/nixops.git"}
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+flake8 = "^3.8.2"
+pytest = "^5.2"
+mypy = "^0.812"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."nixops"]
+hercules_ci = "nixops_hercules_ci.plugin"
