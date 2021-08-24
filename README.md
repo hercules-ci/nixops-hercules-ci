@@ -26,6 +26,9 @@ Add to your NixOps network expression:
 network.storage.hercules-ci = {
   stateName = "storage.nixops";
 };
+network.lock.hercules-ci = {
+  stateName = "storage.nixops";
+};
 ```
 
 Add to your devShell, if you haven't already:

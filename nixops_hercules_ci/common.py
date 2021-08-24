@@ -19,10 +19,14 @@ class HerculesCICommonBackend():
 
     def getArgs(self) -> List[str]:
         options = self.getOptions()
-        args = ["--name", options.stateName]
+        return ["--name", options.stateName] + self.getProjectArgs()
+
+    def getProjectArgs(self) -> List[str]:
+        options = self.getOptions()
         if options.project is not None:
-            args = args + ["--project", options.project]
-        return args
+            return ["--project", options.project]
+        else:
+            return []
 
     def runHci(self, args, **kwargs) -> subprocess.CompletedProcess:
         hciExePath = "hci"
