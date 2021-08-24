@@ -27,7 +27,7 @@ class HerculesCICommonBackend():
     def runHci(self, args):
         hciExePath = "hci"
         try:
-            subprocess.run([hciExePath] + args)
+            subprocess.run([hciExePath] + args, check=True)
         except FileNotFoundError:
             # TODO a stack trace would be redundant. Try to avoid it.
             raise Exception("Could not find the 'hci' executable on PATH. The NixOps Hercules CI plugin needs this command. You can get it from Nixpkgs: pkgs.hci")
