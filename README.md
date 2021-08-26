@@ -20,8 +20,11 @@ Some benefits:
 Currently experimental because of the following:
 
   - [ ] NixOps state storage api release (NixOps 2.0)
-    - [ ] Decide on [fine-grained](https://github.com/NixOS/nixops/pull/1264#issuecomment-889884626) state storage
-  - [ ] Implement locking (besides the implicit effect ordering on CI)
+    - [x] Decide on [fine-grained](https://github.com/NixOS/nixops/pull/1264#issuecomment-889884626) state storage -> not feasible at this time; choose unique `stateName`s
+  - [x] Implement locking (besides the implicit effect ordering on CI)
+  - [ ] Upstream improvements to locking
+    - [ ] Fix known_hosts handling: https://github.com/NixOS/nixops/pull/1464
+    - [ ] Improve locking for real world use https://github.com/NixOS/nixops/pull/1470
 
 ## Usage
 
@@ -29,10 +32,10 @@ Add to your NixOps network expression:
 
 ```nix
 network.storage.hercules-ci = {
-  stateName = "storage.nixops";
+  stateName = "default.nixops";
 };
 network.lock.hercules-ci = {
-  stateName = "storage.nixops";
+  stateName = "default.nixops";
 };
 ```
 
@@ -46,11 +49,57 @@ You can now create a new deployment or migrate an existing one.
 
 ## Create a new deployment
 
-TODO
+1. Add your repository to Hercules CI.
+
+2. Create an empty state file
+
+   ```
+   hci state put --name default.nixops --file /dev/null
+   ```
+
+3. Set a unique `stateName` in the storage backend and lock backend.
+
+   Note: While it's possible to create more than one deployment in a single
+   state file, this is not recommended because operations on one deployment
+   will block the others.
+
+4. Initialize the state file with a deployment
+
+   ```
+   nixops create
+   ```
+
+5. Deploy
+
+   ```
+   nixops deploy
+   ```
 
 ## Migrate an existing deployment
 
-TODO
+1. Export the state to a file using the legacy storage backend.
+
+   ```
+   nixops export -d my-deployment >tmp.nixops
+   ```
+
+2. Change the storage backend and lock backend to `hercules-ci`, choosing a unique `stateName` for the deployment.
+
+   Note: While it's possible to have more than one deployment in a single
+   state file, this is not recommended because operations on one deployment
+   will block the others.
+
+3. Import from the file.
+
+   ```
+   nixops import <tmp.nixops
+   ```
+
+4. Remove the file. It may contain sensitive values.
+
+   ```
+   rm tmp.nixops
+   ```
 
 ## Hacking
 
