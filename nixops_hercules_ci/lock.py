@@ -29,7 +29,7 @@ class HerculesCILockBackend(LockDriver[HerculesCILockBackendOptions], HerculesCI
 
     def unlock(self, **_kwargs) -> None:
         if self.leaseId is not None:
-            r = self.runHci(["lock", "release", "--lease-id", self.leaseId] + self.getProjectArgs())
+            r = self.runHci(["lock", "release", "--lease-id", self.leaseId])
         self.leaseId = None
         if self.pingStopper is not None:
             self.pingStopper.release()
