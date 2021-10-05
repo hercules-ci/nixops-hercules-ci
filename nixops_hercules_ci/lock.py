@@ -37,7 +37,7 @@ class HerculesCILockBackend(LockDriver[HerculesCILockBackendOptions], HerculesCI
 
     def _ping(self) -> None:
         if self.leaseId is not None:
-            r = self.runHci(["lock", "update", "--lease-id", self.leaseId] + self.getProjectArgs())
+            r = self.runHci(["lock", "update", "--lease-id", self.leaseId])
 
     # NB: description and exclusive aren't actually part of the NixOps interface yet.
     def lock(self, description="NixOps", exclusive=True, **_kwargs) -> None:
