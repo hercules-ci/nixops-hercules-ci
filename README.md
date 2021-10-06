@@ -26,6 +26,8 @@ Currently experimental because of the following:
     - [ ] Fix known_hosts handling: https://github.com/NixOS/nixops/pull/1464
     - [ ] Improve locking for real world use https://github.com/NixOS/nixops/pull/1470
 
+A module and resource for retrieving secrets will be added.
+
 ## Usage
 
 Add to your NixOps network expression:
@@ -100,6 +102,21 @@ You can now create a new deployment or migrate an existing one.
    ```
    rm tmp.nixops
    ```
+
+## Attributes
+
+### `network.storage.hercules-ci`
+
+`stateName`: Required string attribute that identifies the state file; `--name` in `hci`. State files are visible in the dashboard. Go to a repo and click the State tab.
+
+`project`: Optional string attribute identifying the repository, consisting of the site (`github`), owner and repo name, separated by slashes `/`. Example: `github/hercules-ci/hercules-ci-agent`. Defaults to the upstream of the current branch when unset.
+
+### `network.lock.hercules-ci`
+
+`stateName`: Required string attribute that identifies the lock; this is intentionally the same as the storage key, but their relation is not enforced.
+
+`project`: Optional string attribute identifying the repository, consisting of the site (`github`), owner and repo name, separated by slashes `/`. Example: `github/hercules-ci/hercules-ci-agent`. Defaults to the upstream of the current branch when unset.
+
 
 ## Hacking
 
